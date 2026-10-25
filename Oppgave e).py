@@ -1,3 +1,4 @@
+
 import numpy as np
 # Importerer NumPy, som brukes til matematiske beregninger
 
@@ -12,87 +13,50 @@ y = data[:, 1]
 
 
 def S(a, b, c, d, f):
-    # Lager funksjonen S som vi skal minimere
+    # Definerer funksjonen som skal minimeres
 
     F = a + b*x + c*np.sin(d*x + f)
-    # Beregner modellverdiene F(x) for alle datapunktene
+    # Beregner modellverdiene for alle datapunktene
 
     return np.sum((y - F)**2)
     # Beregner summen av de kvadrerte avvikene
 
 
+# Startverdier for parameterne
 a = 407.09
-# Bruker alpha fra den lineære regresjonen som startverdi for a
-
 b = 2.87
-# Bruker beta fra den lineære regresjonen som startverdi for b
-
 c = 2.0
-# Velger en startverdi for c
-
 d = 2*np.pi
-# Velger en startverdi for d
-
 f = 0.0
-# Velger en startverdi for f
 
-
+# Parametere for gradientmetoden
 lam = 0.000001
-# Setter læringsraten lambda til et lite positivt tall
-
 h = 0.000001
-# Setter h til et lite tall som brukes i den numeriske derivasjonen
+antall_iterasjoner = 100000
+
+# Skriver ut startverdien til S
+print("S før optimalisering =", S(a, b, c, d, f))
 
 
-for n in range(10000):
-    # Gjentar gradientmetoden 10000 ganger
+for n in range(antall_iterasjoner):
 
-    dS_da = (S(a+h, b, c, d, f) - S(a-h, b, c, d, f))/(2*h)
-    # Beregner den partielle deriverte av S med hensyn på a
+    # Beregner de partielle deriverte numerisk
+    dS_da = (S(a+h, b, c, d, f) -
+             S(a-h, b, c, d, f))/(2*h)
 
-    dS_db = (S(a, b+h, c, d, f) - S(a, b-h, c, d, f))/(2*h)
-    # Beregner den partielle deriverte av S med hensyn på b
+    dS_db = (S(a, b+h, c, d, f) -
+             S(a, b-h, c, d, f))/(2*h)
 
-    dS_dc = (S(a, b, c+h, d, f) - S(a, b, c-h, d, f))/(2*h)
-    # Beregner den partielle deriverte av S med hensyn på c
+    dS_dc = (S(a, b, c+h, d, f) -
+             S(a, b, c-h, d, f))/(2*h)
 
-    dS_dd = (S(a, b, c, d+h, f) - S(a, b, c, d-h, f))/(2*h)
-    # Beregner den partielle deriverte av S med hensyn på d
+    dS_dd = (S(a, b, c, d+h, f) -
+             S(a, b, c, d-h, f))/(2*h)
 
-    dS_df = (S(a, b, c, d, f+h) - S(a, b, c, d, f-h))/(2*h)
-    # Beregner den partielle deriverte av S med hensyn på f
+    dS_df = (S(a, b, c, d, f+h) -
+             S(a, b, c, d, f-h))/(2*h)
 
-
+    # Oppdaterer parameterne ved hjelp av gradientmetoden
     a = a - lam*dS_da
-    # Oppdaterer verdien til a ved hjelp av gradientmetoden
-
     b = b - lam*dS_db
-    # Oppdaterer verdien til b
-
-    c = c - lam*dS_dc
-    # Oppdaterer verdien til c
-
-    d = d - lam*dS_dd
-    # Oppdaterer verdien til d
-
-    f = f - lam*dS_df
-    # Oppdaterer verdien til f
-
-
-print("a =", a)
-# Skriver ut den endelige verdien av a
-
-print("b =", b)
-# Skriver ut den endelige verdien av b
-
-print("c =", c)
-# Skriver ut den endelige verdien av c
-
-print("d =", d)
-# Skriver ut den endelige verdien av d
-
-print("f =", f)
-# Skriver ut den endelige verdien av f
-
-print("S =", S(a, b, c, d, f))
-# Skriver ut den endelige verdien av S
+   
