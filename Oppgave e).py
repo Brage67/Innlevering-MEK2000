@@ -1,25 +1,18 @@
-
 import numpy as np
-# Importerer NumPy, som brukes til matematiske beregninger
 
+# Leser inn datasettet
 data = np.loadtxt("Datasett.dat")
-# Leser inn datasettet fra filen "Datasett.dat"
 
 x = data[:, 0]
-# Henter alle x-verdiene fra første kolonne
-
 y = data[:, 1]
-# Henter alle y-verdiene fra andre kolonne
 
 
 def S(a, b, c, d, f):
-    # Definerer funksjonen som skal minimeres
-
+    # Beregner modellverdiene
     F = a + b*x + c*np.sin(d*x + f)
-    # Beregner modellverdiene for alle datapunktene
 
-    return np.sum((y - F)**2)
     # Beregner summen av de kvadrerte avvikene
+    return np.sum((y - F)**2)
 
 
 # Startverdier for parameterne
@@ -32,15 +25,15 @@ f = 0.0
 # Parametere for gradientmetoden
 lam = 0.000001
 h = 0.000001
-antall_iterasjoner = 100000
+antall_iterasjoner = 10000
 
-# Skriver ut startverdien til S
 print("S før optimalisering =", S(a, b, c, d, f))
 
 
+# Gradientmetoden
 for n in range(antall_iterasjoner):
 
-    # Beregner de partielle deriverte numerisk
+    # Partielle deriverte
     dS_da = (S(a+h, b, c, d, f) -
              S(a-h, b, c, d, f))/(2*h)
 
@@ -56,7 +49,24 @@ for n in range(antall_iterasjoner):
     dS_df = (S(a, b, c, d, f+h) -
              S(a, b, c, d, f-h))/(2*h)
 
-    # Oppdaterer parameterne ved hjelp av gradientmetoden
+    # Oppdaterer alle parameterne
     a = a - lam*dS_da
     b = b - lam*dS_db
-   
+    c = c - lam*dS_dc
+    d = d - lam*dS_dd
+    f = f - lam*dS_df
+
+
+# Skriver ut resultatene
+print("\nResultater etter optimalisering:")
+print("a =", a)
+print("b =", b)
+print("c =", c)
+print("d =", d)
+print("f =", f)
+
+print("S etter optimalisering =", S(a, b, c, d, f))
+
+print(f"F(x) = {a:.6f} + {b:.6f}x + "
+      f"{c:.6f}sin({d:.6f}x + {f:.6f})")
+
