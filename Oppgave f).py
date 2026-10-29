@@ -1,3 +1,4 @@
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -7,37 +8,44 @@ data = np.loadtxt("Datasett.dat")
 x = data[:, 0]
 y = data[:, 1]
 
-# Regresjonslinja fra b)
+# Lineær regresjon fra oppgave b)
 alpha = 407.0925377084
 beta = 2.8746079625
 
-# Lager x-verdier for de to funksjonene
-x_plot = np.linspace(min(x), max(x), 500)
-
-# Regresjonslinja
-y_reg = alpha + beta*x_plot
-
-# Funksjonen F(x) fra e)
+# Parametere fra oppgave e)
 a = 407.045692016344
 b = 2.8364515446532534
 c = 2.289126141530332
 d = 6.197542531946482
 f = -0.3253963709691625
 
+# Lager x-verdier for å tegne glatte kurver
+x_plot = np.linspace(min(x), max(x), 500)
+
+# Beregner den lineære regresjonslinjen
+y_reg = alpha + beta*x_plot
+
+# Beregner den sinusformede modellen
 F = a + b*x_plot + c*np.sin(d*x_plot + f)
 
-# Plotter datapunktene
-plt.scatter(x, y, label="Datapunkter")
+# Tegner måledataene
+plt.scatter(x, y, label="Måledata")
 
-# Plotter regresjonslinja
-plt.plot(x_plot, y_reg, label="Regresjonslinje")
+# Tegner regresjonslinjen
+plt.plot(x_plot, y_reg, label="Lineær regresjon")
 
-# Plotter F(x)
-plt.plot(x_plot, F, label="F(x)")
+# Tegner den sinusformede modellen
+plt.plot(x_plot, F, label="Sinusformet modell")
 
-plt.xlabel("Tid [år etter 1. januar 2022]")
-plt.ylabel("CO$_2$ [ppm]")
-plt.title("CO$_2$-data med regresjonslinje og F(x)")
+# Setter navn på aksene
+plt.xlabel("Tid etter 1. januar 2022 [år]")
+plt.ylabel("CO2-konsentrasjon [ppm]")
+
+# Viser tegnforklaring og rutenett
 plt.legend()
-plt.grid()
+plt.grid(True)
+
+# Viser figuren
 plt.show()
+
+
